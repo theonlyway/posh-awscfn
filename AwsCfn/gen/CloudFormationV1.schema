@@ -48,11 +48,17 @@
       "description": "Returns one value if the specified condition evaluates to true and another value if the specified condition evaluates to false. You can use the AWS::NoValue pseudo parameter as a return value to remove the corresponding property.",
       "skeleton": "{ \"Fn::If\" : [ ] }"
     },
+    "Fn::Split": {
+      "parameter": "Array",
+      "return-type": "String",
+      "description": "To split a string into a list of string values so that you can select an element from the resulting string list, use the Fn::Split intrinsic function.",
+      "skeleton": "{ \"Fn::Split\" : [ ] }"
+    },
     "Fn::Sub": {
-      "parameter": "Json",
+      "parameter": "Array",
       "return-type": "String",
       "description": "The intrinsic function Fn::Sub substitutes variables in an input string with values that you specify. ",
-      "skeleton": "{ \"Fn::If\" : \"\" }"
+      "skeleton": "{ \"Fn::Sub\" : [ ] }"
     },
     "Ref": {
       "parameter": "String",
@@ -848,6 +854,7 @@
           "AuthorizerId": {
             "type": "String",
             "required": false,
+            "resource-ref-type": "AWS::ApiGateway::Authorizer",
             "description": "The identifier of the authorizer to use on this method. If you specify this property, specify CUSTOM for the AuthorizationType property."
           },
           "HttpMethod": {
@@ -1315,6 +1322,7 @@
           "DeploymentId": {
             "type": "String",
             "required": true,
+            "resource-ref-type": "AWS::ApiGateway::Deployment",
             "description": "The ID of the deployment that the stage points to."
           },
           "Description": {
@@ -3182,6 +3190,16 @@
                     ],
                     "description": "HTTP methods for which CloudFront caches responses."
                   },
+                  "Compress": {
+                    "type": "Boolean",
+                    "required": false,
+                    "description": "Indicates whether CloudFront automatically compresses certain files for this cache behavior."
+                  },
+                  "DefaultTTL": {
+                    "type": "Number",
+                    "required": false,
+                    "description": "The default time in seconds that objects stay in CloudFront caches before CloudFront forwards another request to your custom origin to determine whether the object has been updated."
+                  },
                   "ForwardedValues": {
                     "type": "Object",
                     "required": true,
@@ -3223,8 +3241,13 @@
                       }
                     }
                   },
+                  "MaxTTL": {
+                    "type": "Number",
+                    "required": false,
+                    "description": "The maximum time in seconds that objects stay in CloudFront caches before CloudFront forwards another request to your custom origin to determine whether the object has been updated."
+                  },
                   "MinTTL": {
-                    "type": "String",
+                    "type": "Number",
                     "required": false,
                     "description": "The minimum amount of time that you want objects to stay in the cache before CloudFront queries your origin to see whether the object has been updated."
                   },
@@ -3328,6 +3351,16 @@
                     ],
                     "description": "HTTP methods for which CloudFront caches responses."
                   },
+                  "Compress": {
+                    "type": "Boolean",
+                    "required": false,
+                    "description": "Indicates whether CloudFront automatically compresses certain files for this cache behavior."
+                  },
+                  "DefaultTTL": {
+                    "type": "Number",
+                    "required": false,
+                    "description": "The default time in seconds that objects stay in CloudFront caches before CloudFront forwards another request to your custom origin to determine whether the object has been updated."
+                  },
                   "ForwardedValues": {
                     "type": "Object",
                     "required": true,
@@ -3375,8 +3408,13 @@
                       }
                     }
                   },
+                  "MaxTTL": {
+                    "type": "Number",
+                    "required": false,
+                    "description": "The maximum time in seconds that objects stay in CloudFront caches before CloudFront forwards another request to your custom origin to determine whether the object has been updated."
+                  },
                   "MinTTL": {
-                    "type": "String",
+                    "type": "Number",
                     "required": false,
                     "description": "The minimum amount of time that you want objects to stay in the cache before CloudFront queries your origin to see whether the object has been updated."
                   },
@@ -3927,6 +3965,234 @@
               "None"
             ],
             "description": "The unit for the alarm's associated metric."
+          }
+        }
+      },
+      "Condition": {
+        "type": "ConditionDeclaration",
+        "required": false,
+        "description": "Associated condition that if true will allow the resource to be created."
+      },
+      "DependsOn": {
+        "type": "Resource",
+        "required": false,
+        "description": "The DependsOn attribute enables you to specify that the creation of a specific resource follows another."
+      },
+      "Description": {
+        "type": "String",
+        "required": false,
+        "description": "A description for the CloudFormation resource. This field is ignored when the template is deployed to CloudFormation."
+      },
+      "DeletionPolicy": {
+        "type": "String",
+        "required": false,
+        "allowed-values": [
+          "Delete",
+          "Retain"
+        ],
+        "disable-refs": true,
+        "description": "The DeletionPolicy attribute enables you to specify how AWS CloudFormation handles the resource deletion."
+      },
+      "Metadata": {
+        "type": "Json",
+        "required": false,
+        "description": "The Metadata attribute enables you to associate structured data with a resource."
+      }
+    }
+  }
+,
+  "AWS::CodeBuild::Project": {
+    "type": "Object",
+    "required": false,
+    "description": "The AWS::CodeBuild::Project resource configures how AWS CodeBuild builds your source code.",
+    "return-values": [
+      {
+        "name": "Arn",
+        "description": "The ARN of the AWS CodeBuild project."
+      }
+    ],
+    "properties": {
+      "Type": {
+        "type": "String",
+        "required": true,
+        "description": "The AWS::CodeBuild::Project resource configures how AWS CodeBuild builds your source code."
+      },
+      "Properties": {
+        "type": "Object",
+        "required": true,
+        "properties": {
+          "Artifacts": {
+            "type": "Object",
+            "required": true,
+            "description": "The output settings for artifacts that the project generates during a build.",
+            "properties": {
+              "Location": {
+                "type": "String",
+                "required": false,
+                "description": "The location where AWS CodeBuild saves the build output artifacts."
+              },
+              "Name": {
+                "type": "String",
+                "required": false,
+                "description": "The name of the build output folder where AWS CodeBuild saves the build output artifacts."
+              },
+              "NamespaceType": {
+                "type": "String",
+                "required": false,
+                "description": "The information AWS CodeBuild adds to the build output path, such as a build ID."
+              },
+              "Packaging": {
+                "type": "String",
+                "required": false,
+                "allowed-values": [
+                  "*",
+                  "NONE",
+                  "ZIP"
+                ],
+                "description": "Indicates how AWS CodeBuild packages the build output artifacts."
+              },
+              "Path": {
+                "type": "String",
+                "required": false,
+                "description": "The path to the build output folder where AWS CodeBuild saves the build output artifacts."
+              },
+              "Type": {
+                "type": "String",
+                "required": false,
+                "allowed-values": [
+                  "*",
+                  "CODEPIPELINE",
+                  "S3",
+                  "NO_ARTIFACTS"
+                ],
+                "description": "The type of build output artifact."
+              }
+            }
+          },
+          "Description": {
+            "type": "String",
+            "required": false,
+            "description": "A description of the project. Use the description to identify the purpose of the project."
+          },
+          "EncryptionKey": {
+            "type": "String",
+            "required": false,
+            "resource-ref-type": "AWS::KMS::Key",
+            "description": "The alias or Amazon Resource Name (ARN) of the AWS Key Management Service (AWS KMS) customer master key (CMK) that AWS CodeBuild uses to encrypt the build output."
+          },
+          "Environment": {
+            "type": "Object",
+            "required": false,
+            "description": "The build environment settings for the project, such as the environment type or the environment variables to use for the build environment.",
+            "properties": {
+              "ComputeType": {
+                "type": "String",
+                "required": true,
+                "allowed-values": [
+                  "*",
+                  "BUILD_GENERAL1_SMALL",
+                  "BUILD_GENERAL1_MEDIUM",
+                  "BUILD_GENERAL1_LARGE"
+                ],
+                "description": "The type of compute environment"
+              },
+              "EnvironmentVariables": {
+                "type": "Array",
+                "array-type": "Object",
+                "required": false,
+                "description": "The environment variables that your builds can use.",
+                "properties": {
+                  "Name": {
+                    "type": "String",
+                    "required": true,
+                    "description": "The name of an environment variable."
+                  },
+                  "Value": {
+                    "type": "String",
+                    "required": true,
+                    "description": "The value of the environment variable."
+                  }
+                }
+              },
+              "Image": {
+                "type": "String",
+                "required": true,
+                "description": "The Docker image identifier that the build environment uses."
+              },
+              "Type": {
+                "type": "String",
+                "required": true,
+                "allowed-values": [
+                  "*",
+                  "LINUX_CONTAINER"
+                ],
+                "description": "The type of build environment."
+              }
+            }
+          },
+          "Name": {
+            "type": "String",
+            "required": true,
+            "description": "A name for the project."
+          },
+          "ServiceRole": {
+            "type": "String",
+            "required": true,
+            "resource-ref-type": "AWS::IAM::Role",
+            "description": "The ARN of the service role that AWS CodeBuild uses to interact with services on your behalf."
+          },
+          "Source": {
+            "type": "Object",
+            "required": true,
+            "description": "The source code settings for the project, such as the source code's repository type and location.",
+            "properties": {
+              "BuildSpec": {
+                "type": "String",
+                "required": true,
+                "description": "The build specification, specified as a single string."
+              },
+              "Location": {
+                "type": "String",
+                "required": true,
+                "description": "The location of the source code in the specified repository type."
+              },
+              "Type": {
+                "type": "String",
+                "required": true,
+                "allowed-values": [
+                  "*",
+                  "CODEPIPELINE",
+                  "S3",
+                  "NO_ARTIFACTS",
+                  "GITHUB"
+                ],
+                "description": "The type of repository that contains your source code."
+              }
+            }
+          },
+          "TimeoutInMinutes": {
+            "type": "Number",
+            "required": false,
+            "description": "The number of minutes after which AWS CodeBuild stops the build if it's not complete. "
+          },
+          "Tags": {
+            "type": "Array",
+            "array-type": "Object",
+            "required": false,
+            "description": "The tags that you want to attach.",
+            "properties": {
+              "Key": {
+                "type": "String",
+                "required": true,
+                "description": "The key term for this item."
+              },
+              "Value": {
+                "type": "String",
+                "required": true,
+                "resource-ref-type": "*",
+                "description": "A value associated with the key term."
+              }
+            }
           }
         }
       },
@@ -6607,6 +6873,24 @@
               "x1.32xlarge"
             ]
           },
+          "Ipv6AddressCount": {
+            "type": "Number",
+            "required": false,
+            "description": "The number of IPv6 addresses to associate with the instance's primary network interface."
+          },
+          "Ipv6Addresses": {
+            "type": "Array",
+            "array-type": "Object",
+            "required": false,
+            "description": "One or more specific IPv6 addresses from the IPv6 CIDR block range of your subnet to associate with the instance's primary network interface.",
+            "properties": {
+              "Ipv6Address": {
+                "type": "String",
+                "required": true,
+                "description": "The IPv6 address to associate with the network interface."
+              }
+            }
+          },
           "KernelId": {
             "type": "String",
             "required": false,
@@ -7120,6 +7404,11 @@
               }
             }
           },
+          "Ipv6CidrBlock": {
+            "type": "String",
+            "required": false,
+            "description": "The IPv6 CIDR range to allow or deny, in CIDR notation."
+          },
           "PortRange": {
             "type": "Object",
             "required": false,
@@ -7207,6 +7496,24 @@
             "resource-ref-type": "AWS::EC2::SecurityGroup",
             "required": false,
             "description": "A list of security group IDs associated with this network interface."
+          },
+          "Ipv6AddressCount": {
+            "type": "Number",
+            "required": false,
+            "description": "The number of IPv6 addresses to associate with the network interface."
+          },
+          "Ipv6Addresses": {
+            "type": "Array",
+            "array-type": "Object",
+            "required": false,
+            "description": "One or more specific IPv6 addresses from the IPv6 CIDR block range of your subnet to associate with the network interface.",
+            "properties": {
+              "Ipv6Address": {
+                "type": "String",
+                "required": true,
+                "description": "The IPv6 address to associate with the network interface."
+              }
+            }
           },
           "PrivateIpAddress": {
             "type": "String",
@@ -7444,6 +7751,11 @@
             "type": "String",
             "required": true,
             "description": "The CIDR address block used for the destination match. For example, \"0.0.0.0/0\". Routing decisions are based on the most specific match."
+          },
+          "DestinationIpv6CidrBlock": {
+            "type": "String",
+            "required": false,
+            "description": "The IPv6 CIDR address block used for the destination match."
           },
           "GatewayId": {
             "type": "String",
@@ -7929,6 +8241,11 @@
             "required": false,
             "description": "The CIDR range. Required: Conditional�cannot be used when specifying a destination security group."
           },
+          "CidrIpv6": {
+            "type": "String",
+            "required": false,
+            "description": "The AWS service prefix of an Amazon VPC endpoint."
+          },
           "DestinationPrefixListId": {
             "type": "String",
             "required": false,
@@ -8105,6 +8422,11 @@
             "type": "String",
             "required": false,
             "description": "The CIDR range. If you specify SourceSecurityGroupName, do not specify CidrIp."
+          },
+          "CidrIpv6": {
+            "type": "String",
+            "required": false,
+            "description": "The AWS service prefix of an Amazon VPC endpoint."
           },
           "SourceSecurityGroupName": {
             "type": "String",
@@ -8455,12 +8777,30 @@
                         "required": true,
                         "description": "The order in which the network interface should be attached."
                       },
-                      "GroupSet": {
+                      "Groups": {
                         "type": "Array",
                         "array-type": "String",
                         "required": false,
                         "resource-ref-type": "AWS::EC2::SecurityGroup",
                         "description": "A list of security group IDs associated with this network interface."
+                      },
+                      "Ipv6AddressCount": {
+                        "type": "Number",
+                        "required": false,
+                        "description": "The number of IPv6 addresses to associate with the network interface."
+                      },
+                      "Ipv6Addresses": {
+                        "type": "Array",
+                        "array-type": "Object",
+                        "required": false,
+                        "description": "One or more specific IPv6 addresses from the IPv6 CIDR block range of your subnet to associate with the network interface.",
+                        "properties": {
+                          "Ipv6Address": {
+                            "type": "String",
+                            "required": true,
+                            "description": "The IPv6 address to associate with the network interface."
+                          }
+                        }
                       },
                       "NetworkInterfaceId": {
                         "type": "String",
@@ -8628,6 +8968,10 @@
       {
         "name": "AvailabilityZone",
         "description": "Returns the availability zone (for example, \"us-east-1a\") of this subnet."
+      },
+      {
+        "name": "Ipv6CidrBlocks",
+        "description": "A list of IPv6 CIDR blocks that are associated with the subnet"
       }
     ],
     "properties": {
@@ -8679,6 +9023,66 @@
                 "description": "A value associated with the key term."
               }
             }
+          }
+        }
+      },
+      "Condition": {
+        "type": "ConditionDeclaration",
+        "required": false,
+        "description": "Associated condition that if true will allow the resource to be created."
+      },
+      "DependsOn": {
+        "type": "Resource",
+        "required": false,
+        "description": "The DependsOn attribute enables you to specify that the creation of a specific resource follows another."
+      },
+      "Description": {
+        "type": "String",
+        "required": false,
+        "description": "A description for the CloudFormation resource. This field is ignored when the template is deployed to CloudFormation."
+      },
+      "DeletionPolicy": {
+        "type": "String",
+        "required": false,
+        "allowed-values": [
+          "Delete",
+          "Retain"
+        ],
+        "disable-refs": true,
+        "description": "The DeletionPolicy attribute enables you to specify how AWS CloudFormation handles the resource deletion."
+      },
+      "Metadata": {
+        "type": "Json",
+        "required": false,
+        "description": "The Metadata attribute enables you to associate structured data with a resource."
+      }
+    }
+  }
+,
+  "AWS::EC2::SubnetCidrBlock": {
+    "type": "Object",
+    "required": false,
+    "description": "The AWS::EC2::SubnetCidrBlock resource associates a single IPv6 CIDR block with an Amazon VPC subnet.",
+    "properties": {
+      "Type": {
+        "type": "String",
+        "required": true,
+        "description": "The AWS::EC2::SubnetCidrBlock resource associates a single IPv6 CIDR block with an Amazon VPC subnet."
+      },
+      "Properties": {
+        "type": "Object",
+        "required": true,
+        "properties": {
+          "Ipv6CidrBlock": {
+            "type": "String",
+            "required": true,
+            "description": "The IPv6 CIDR block for the subnet. The CIDR block must have a prefix length of /64."
+          },
+          "SubnetId": {
+            "type": "String",
+            "required": true,
+            "resource-ref-type": "AWS::EC2::Subnet",
+            "description": "The ID of the subnet to associate the IPv6 CIDR block with."
           }
         }
       },
@@ -9054,12 +9458,20 @@
     "description": "Creates a Virtual Private Cloud (VPC) with the CIDR block that you specify.",
     "return-values": [
       {
+        "name": "CidrBlock",
+        "description": "he set of IP addresses for the VPC"
+      },
+      {
         "name": "DefaultNetworkAcl",
         "description": "The default network ACL ID that is associated with the VPC, which AWS creates when you create a VPC."
       },
       {
         "name": "DefaultSecurityGroup",
         "description": "The default security group ID that is associated with the VPC, which AWS creates when you create a VPC."
+      },
+      {
+        "name": "Ipv6CidrBlocks",
+        "description": "A list of IPv6 CIDR blocks that are associated with the VPC"
       }
     ],
     "properties": {
@@ -9114,6 +9526,66 @@
                 "description": "A value associated with the key term."
               }
             }
+          }
+        }
+      },
+      "Condition": {
+        "type": "ConditionDeclaration",
+        "required": false,
+        "description": "Associated condition that if true will allow the resource to be created."
+      },
+      "DependsOn": {
+        "type": "Resource",
+        "required": false,
+        "description": "The DependsOn attribute enables you to specify that the creation of a specific resource follows another."
+      },
+      "Description": {
+        "type": "String",
+        "required": false,
+        "description": "A description for the CloudFormation resource. This field is ignored when the template is deployed to CloudFormation."
+      },
+      "DeletionPolicy": {
+        "type": "String",
+        "required": false,
+        "allowed-values": [
+          "Delete",
+          "Retain"
+        ],
+        "disable-refs": true,
+        "description": "The DeletionPolicy attribute enables you to specify how AWS CloudFormation handles the resource deletion."
+      },
+      "Metadata": {
+        "type": "Json",
+        "required": false,
+        "description": "The Metadata attribute enables you to associate structured data with a resource."
+      }
+    }
+  }
+,
+  "AWS::EC2::VPCCidrBlock": {
+    "type": "Object",
+    "required": false,
+    "description": "The AWS::EC2::VPCCidrBlock resource associates a single Amazon-provided IPv6 CIDR block with an Amazon VPC VPC.",
+    "properties": {
+      "Type": {
+        "type": "String",
+        "required": true,
+        "description": "The AWS::EC2::VPCCidrBlock resource associates a single Amazon-provided IPv6 CIDR block with an Amazon VPC VPC."
+      },
+      "Properties": {
+        "type": "Object",
+        "required": true,
+        "properties": {
+          "AmazonProvidedIpv6CidrBlock": {
+            "type": "Boolean",
+            "required": false,
+            "description": "Whether to request an Amazon-provided IPv6 CIDR block with a /56 prefix length for the VPC."
+          },
+          "VpcId": {
+            "type": "String",
+            "required": true,
+            "resource-ref-type": "AWS::EC2::VPC",
+            "description": "The ID of the VPC to associate the Amazon-provided IPv6 CIDR block with."
           }
         }
       },
@@ -10086,6 +10558,11 @@
                 "required": true,
                 "description": "The number of MiB of memory to reserve for the container. If your container attempts to exceed the allocated memory, the container is killed."
               },
+              "MemoryReservation": {
+                "type": "Number",
+                "required": false,
+                "description": "The number of MiB of memory to reserve for the container. When system memory is under contention, Docker attempts to keep the container memory within the limit."
+              },
               "MountPoints": {
                 "type": "Array",
                 "array-type": "Object",
@@ -10217,6 +10694,17 @@
             "type": "String",
             "required": true,
             "description": "The name of a family that this task definition is registered to."
+          },
+          "NetworkMode": {
+            "type": "String",
+            "required": false,
+            "description": "The Docker networking mode to use for the containers in the task, such as none, bridge, or host.",
+            "allowed-values": [
+              "*",
+              "bridge",
+              "host",
+              "none"
+            ]
           },
           "TaskRoleArn": {
             "type": "String",
@@ -15376,6 +15864,11 @@
                         "required": true,
                         "resource-ref-type": "AWS::IAM::Role",
                         "description": "The ARN of the IAM role that grants access to the Firehose stream."
+                      },
+                      "Separator": {
+                        "type": "String",
+                        "required": true,
+                        "description": "A character separator that's used to separate records written to the Firehose stream."
                       }
                     }
                   },
@@ -16259,6 +16752,12 @@
     "type": "Object",
     "required": false,
     "description": "The AWS::KMS::Key resource creates a customer master key (CMK) in AWS Key Management Service (AWS KMS).",
+    "return-values": [
+      {
+        "name": "Arn",
+        "description": "The ARN of the AWS KMS key."
+      }
+    ],
     "properties": {
       "Type": {
         "type": "String",
@@ -16870,6 +17369,11 @@
         "type": "Object",
         "required": true,
         "properties": {
+          "LogGroupName": {
+            "type": "String",
+            "required": false,
+            "description": "A name for the log group. If you don't specify a name, AWS CloudFormation generates a unique physical ID and uses that ID for the table name."
+          },
           "RetentionInDays": {
             "type": "Number",
             "required": false,
@@ -17126,224 +17630,6 @@
     }
   }
 ,
-  "AWS::OpsWorks::Instance": {
-    "type": "Object",
-    "required": false,
-    "description": "Creates an instance for an AWS OpsWorks stack. These instances represent the Amazon EC2 instances that, for example, handle the work of serving applications and balancing traffic.",
-    "properties": {
-      "Type": {
-        "type": "String",
-        "required": true,
-        "description": "Creates an instance for an AWS OpsWorks stack. These instances represent the Amazon EC2 instances that, for example, handle the work of serving applications and balancing traffic."
-      },
-      "Properties": {
-        "type": "Object",
-        "required": true,
-        "properties": {
-          "AmiId": {
-            "type": "String",
-            "required": false,
-            "description": "The ID of the custom AMI to be used to create the instance. The AMI should be based on one of the standard AWS OpsWorks APIs."
-          },
-          "Architecture": {
-            "type": "String",
-            "required": false,
-            "description": "The instance architecture."
-          },
-          "AvailabilityZone": {
-            "type": "String",
-            "required": false,
-            "description": "The instance Availability Zone."
-          },
-          "EbsOptimized": {
-            "type": "Boolean",
-            "required": false,
-            "description": "Whether the instance is optimized for Amazon Elastic Block Store (Amazon EBS) I/O."
-          },
-          "InstallUpdatesOnBoot": {
-            "type": "Boolean",
-            "required": false,
-            "description": "Whether to install operating system and package updates when the instance boots."
-          },
-          "InstanceType": {
-            "type": "String",
-            "required": true,
-            "description": "The instance type, which must be supported by AWS OpsWorks.",
-            "allowed-values": [
-              "*",
-              "t1.micro",
-              "t2.nano",
-              "t2.micro",
-              "t2.small",
-              "t2.medium",
-              "t2.large",
-              "m1.small",
-              "m1.medium",
-              "m1.large",
-              "m1.xlarge",
-              "m2.xlarge",
-              "m2.2xlarge",
-              "m2.4xlarge",
-              "m3.medium",
-              "m3.large",
-              "m3.xlarge",
-              "m3.2xlarge",
-              "m4.large",
-              "m4.xlarge",
-              "m4.2xlarge",
-              "m4.4xlarge",
-              "m4.10xlarge",
-              "m4.16xlarge",
-              "c1.medium",
-              "c1.xlarge",
-              "cr1.8xlarge",
-              "c3.large",
-              "c3.xlarge",
-              "c3.2xlarge",
-              "c3.4xlarge",
-              "c3.8xlarge",
-              "c4.large",
-              "c4.xlarge",
-              "c4.2xlarge",
-              "c4.4xlarge",
-              "c4.8xlarge",
-              "cc1.4xlarge",
-              "cc2.8xlarge",
-              "cg1.4xlarge",
-              "d2.xlarge",
-              "d2.2xlarge",
-              "d2.4xlarge",
-              "d2.8xlarge",
-              "g2.2xlarge",
-              "g2.8xlarge",
-              "hi1.4xlarge",
-              "hs1.8xlarge",
-              "i2.xlarge",
-              "i2.2xlarge",
-              "i2.4xlarge",
-              "i2.8xlarge",
-              "p2.xlarge",
-              "p2.8xlarge",
-              "p2.16xlarge",
-              "r3.large",
-              "r3.xlarge",
-              "r3.2xlarge",
-              "r3.4xlarge",
-              "r3.8xlarge",
-              "x1.32xlarge"
-            ]
-          },
-          "LayerIds": {
-            "type": "Array",
-            "array-type": "String",
-            "required": true,
-            "resource-ref-type": "AWS::OpsWorks::Layer",
-            "description": "The IDs of the AWS OpsWorks layers that will be associated with this instance."
-          },
-          "Os": {
-            "type": "String",
-            "required": false,
-            "description": "The instance operating system."
-          },
-          "RootDeviceType": {
-            "type": "String",
-            "required": false,
-            "description": "The instance root device type."
-          },
-          "SshKeyName": {
-            "type": "String",
-            "required": false,
-            "description": "The instance SSH key name."
-          },
-          "StackId": {
-            "type": "String",
-            "required": true,
-            "resource-ref-type": "AWS::OpsWorks::Stack",
-            "description": "The ID of the AWS OpsWorks stack that this instance will be associated with."
-          },
-          "TimeBasedAutoScaling": {
-            "type": "Object",
-            "required": false,
-            "description": "The time-based scaling configuration for the instance.",
-            "properties": {
-              "Sunday": {
-                "type": "Json",
-                "required": false,
-                "description": "The schedule for Sunday."
-              },
-              "Monday": {
-                "type": "Json",
-                "required": false,
-                "description": "The schedule for Monday."
-              },
-              "Tuesday": {
-                "type": "Json",
-                "required": false,
-                "description": "The schedule for Tuesday."
-              },
-              "Wednesday": {
-                "type": "Json",
-                "required": false,
-                "description": "The schedule for Wednesday."
-              },
-              "Thursday": {
-                "type": "Json",
-                "required": false,
-                "description": "The schedule for Thursday."
-              },
-              "Friday": {
-                "type": "Json",
-                "required": false,
-                "description": "The schedule for Friday."
-              },
-              "Saturday": {
-                "type": "Json",
-                "required": false,
-                "description": "The schedule for Saturday."
-              }
-            }
-          },
-          "SubnetId": {
-            "type": "String",
-            "required": false,
-            "resource-ref-type": "AWS::EC2::Subnet",
-            "description": "The ID of the instance's subnet. If the stack is running in a VPC, you can use this parameter to override the stack's default subnet ID value and direct AWS OpsWorks to launch the instance in a different subnet."
-          }
-        }
-      },
-      "Condition": {
-        "type": "ConditionDeclaration",
-        "required": false,
-        "description": "Associated condition that if true will allow the resource to be created."
-      },
-      "DependsOn": {
-        "type": "Resource",
-        "required": false,
-        "description": "The DependsOn attribute enables you to specify that the creation of a specific resource follows another."
-      },
-      "Description": {
-        "type": "String",
-        "required": false,
-        "description": "A description for the CloudFormation resource. This field is ignored when the template is deployed to CloudFormation."
-      },
-      "DeletionPolicy": {
-        "type": "String",
-        "required": false,
-        "allowed-values": [
-          "Delete",
-          "Retain"
-        ],
-        "disable-refs": true,
-        "description": "The DeletionPolicy attribute enables you to specify how AWS CloudFormation handles the resource deletion."
-      },
-      "Metadata": {
-        "type": "Json",
-        "required": false,
-        "description": "The Metadata attribute enables you to associate structured data with a resource."
-      }
-    }
-  }
-,
   "AWS::OpsWorks::App": {
     "type": "Object",
     "required": false,
@@ -17399,6 +17685,35 @@
             "type": "String",
             "required": false,
             "description": "A description of the app."
+          },
+          "DataSources": {
+            "type": "Array",
+            "array-type": "Object",
+            "required": false,
+            "description": "A list of databases to associate with the AWS OpsWorks app.",
+            "properties": {
+              "Arn": {
+                "type": "String",
+                "description": "The ARN of the data source.",
+                "required": false
+              },
+              "DatabaseName": {
+                "type": "String",
+                "description": "The name of the database.",
+                "required": false
+              },
+              "Type": {
+                "type": "String",
+                "description": "The type of the data source",
+                "allowed-values": [
+                  "*",
+                  "AutoSelectOpsworksMysqlInstance",
+                  "OpsworksMysqlInstance",
+                  "RdsDbInstance"
+                ],
+                "required": false
+              }
+            }
           },
           "Domains": {
             "type": "Array",
@@ -17572,6 +17887,351 @@
     }
   }
 ,
+  "AWS::OpsWorks::Instance": {
+    "type": "Object",
+    "required": false,
+    "description": "Creates an instance for an AWS OpsWorks stack. These instances represent the Amazon EC2 instances that, for example, handle the work of serving applications and balancing traffic.",
+    "return-values": [
+      {
+        "name": "PublicIp",
+        "description": "The public IP address of the AWS OpsWorks instance, such as 192.0.2.0."
+      }
+    ],
+    "properties": {
+      "Type": {
+        "type": "String",
+        "required": true,
+        "description": "Creates an instance for an AWS OpsWorks stack. These instances represent the Amazon EC2 instances that, for example, handle the work of serving applications and balancing traffic."
+      },
+      "Properties": {
+        "type": "Object",
+        "required": true,
+        "properties": {
+          "AgentVersion": {
+            "type": "String",
+            "required": false,
+            "description": "The version of the AWS OpsWorks agent that AWS OpsWorks installs on each instance."
+          },
+          "AmiId": {
+            "type": "String",
+            "required": false,
+            "description": "The ID of the custom AMI to be used to create the instance. The AMI should be based on one of the standard AWS OpsWorks APIs."
+          },
+          "Architecture": {
+            "type": "String",
+            "required": false,
+            "description": "The instance architecture."
+          },
+          "AutoScalingType": {
+            "type": "String",
+            "required": false,
+            "allowed-values": [
+              "*",
+              "load",
+              "timer"
+            ],
+            "description": "For scaling instances, the type of scaling."
+          },
+          "AvailabilityZone": {
+            "type": "String",
+            "required": false,
+            "description": "The instance Availability Zone."
+          },
+          "BlockDeviceMappings": {
+            "array-type": "Object",
+            "type": "Array",
+            "required": false,
+            "description": "A list of block devices that are mapped to the AWS OpsWorks instance.",
+            "properties": {
+              "DeviceName": {
+                "type": "String",
+                "required": true,
+                "description": "The name of the device within Amazon EC2."
+              },
+              "Ebs": {
+                "type": "Object",
+                "required": false,
+                "description": "The EC2 EBS Block Device. You can specify either VirtualName or Ebs, but not both.",
+                "properties": {
+                  "DeleteOnTermination": {
+                    "type": "Boolean",
+                    "required": false,
+                    "description": "Determines whether to delete the volume on instance termination. The default value is \"true\"."
+                  },
+                  "Iops": {
+                    "type": "String",
+                    "required": false,
+                    "description": "The number of I/O operations per second (IOPS) that the volume supports. This can be an integer from 100 to 2000. Required when the volume type is \"io1\"; not used with standard volumes."
+                  },
+                  "SnapshotId": {
+                    "type": "String",
+                    "required": false,
+                    "description": "The snapshot ID of the volume to use to create a block device. If you specify both SnapshotId and VolumeSize, VolumeSize must be equal or greater than the size of the snapshot."
+                  },
+                  "VolumeSize": {
+                    "type": "String",
+                    "required": false,
+                    "description": "The volume size, in gibibytes (GiB). This can be a number from 1 to 1024. If the volume type is \"io1\", the minimum value is 10. If you specify both SnapshotId and VolumeSize, VolumeSize must be equal or greater than the size of the snapshot."
+                  },
+                  "VolumeType": {
+                    "type": "String",
+                    "required": false,
+                    "allowed-values": [
+                      "*",
+                      "standard",
+                      "io1",
+                      "gp2"
+                    ],
+                    "description": "The volume size, in gibibytes (GiB). This can be a number from 1 to 1024. If the volume type is \"io1\", the minimum value is 10."
+                  }
+                }
+              },
+              "NoDevice": {
+                "type": "Object",
+                "required": false,
+                "description": "This is set to empty map (\"{}\") that be used to unmap a defined device.",
+                "properties": {}
+              },
+              "VirtualName": {
+                "type": "String",
+                "required": true,
+                "description": "The name of the virtual device. The name must be in the form ephemeralX where X is a number starting from zero (0); for example, ephemeral0. You can specify either VirtualName or Ebs, but not both."
+              }
+            }
+          },
+          "EbsOptimized": {
+            "type": "Boolean",
+            "required": false,
+            "description": "Whether the instance is optimized for Amazon Elastic Block Store (Amazon EBS) I/O."
+          },
+          "ElasticIps": {
+            "type": "Array",
+            "array-type": "String",
+            "required": false,
+            "description": "A list of Elastic IP addresses to associate with the instance."
+          },
+          "Hostname": {
+            "type": "String",
+            "required": false,
+            "description": "The name of the instance host."
+          },
+          "InstallUpdatesOnBoot": {
+            "type": "Boolean",
+            "required": false,
+            "description": "Whether to install operating system and package updates when the instance boots."
+          },
+          "InstanceType": {
+            "type": "String",
+            "required": true,
+            "description": "The instance type, which must be supported by AWS OpsWorks.",
+            "allowed-values": [
+              "*",
+              "t1.micro",
+              "t2.nano",
+              "t2.micro",
+              "t2.small",
+              "t2.medium",
+              "t2.large",
+              "m1.small",
+              "m1.medium",
+              "m1.large",
+              "m1.xlarge",
+              "m2.xlarge",
+              "m2.2xlarge",
+              "m2.4xlarge",
+              "m3.medium",
+              "m3.large",
+              "m3.xlarge",
+              "m3.2xlarge",
+              "m4.large",
+              "m4.xlarge",
+              "m4.2xlarge",
+              "m4.4xlarge",
+              "m4.10xlarge",
+              "m4.16xlarge",
+              "c1.medium",
+              "c1.xlarge",
+              "cr1.8xlarge",
+              "c3.large",
+              "c3.xlarge",
+              "c3.2xlarge",
+              "c3.4xlarge",
+              "c3.8xlarge",
+              "c4.large",
+              "c4.xlarge",
+              "c4.2xlarge",
+              "c4.4xlarge",
+              "c4.8xlarge",
+              "cc1.4xlarge",
+              "cc2.8xlarge",
+              "cg1.4xlarge",
+              "d2.xlarge",
+              "d2.2xlarge",
+              "d2.4xlarge",
+              "d2.8xlarge",
+              "g2.2xlarge",
+              "g2.8xlarge",
+              "hi1.4xlarge",
+              "hs1.8xlarge",
+              "i2.xlarge",
+              "i2.2xlarge",
+              "i2.4xlarge",
+              "i2.8xlarge",
+              "p2.xlarge",
+              "p2.8xlarge",
+              "p2.16xlarge",
+              "r3.large",
+              "r3.xlarge",
+              "r3.2xlarge",
+              "r3.4xlarge",
+              "r3.8xlarge",
+              "x1.32xlarge"
+            ]
+          },
+          "LayerIds": {
+            "type": "Array",
+            "array-type": "String",
+            "required": true,
+            "resource-ref-type": "AWS::OpsWorks::Layer",
+            "description": "The IDs of the AWS OpsWorks layers that will be associated with this instance."
+          },
+          "Os": {
+            "type": "String",
+            "required": false,
+            "description": "The instance operating system."
+          },
+          "RootDeviceType": {
+            "type": "String",
+            "required": false,
+            "allowed-values": [
+              "*",
+              "ebs",
+              "instance-store"
+            ],
+            "description": "The instance root device type."
+          },
+          "SshKeyName": {
+            "type": "String",
+            "required": false,
+            "description": "The instance SSH key name."
+          },
+          "StackId": {
+            "type": "String",
+            "required": true,
+            "resource-ref-type": "AWS::OpsWorks::Stack",
+            "description": "The ID of the AWS OpsWorks stack that this instance will be associated with."
+          },
+          "SubnetId": {
+            "type": "String",
+            "required": false,
+            "resource-ref-type": "AWS::EC2::Subnet",
+            "description": "The ID of the instance's subnet. If the stack is running in a VPC, you can use this parameter to override the stack's default subnet ID value and direct AWS OpsWorks to launch the instance in a different subnet."
+          },
+          "Tenancy": {
+            "type": "String",
+            "required": false,
+            "allowed-values": [
+              "*",
+              "dedicated",
+              "default",
+              "host"
+            ],
+            "description": "The tenancy of the instance."
+          },
+          "TimeBasedAutoScaling": {
+            "type": "Object",
+            "required": false,
+            "description": "The time-based scaling configuration for the instance.",
+            "properties": {
+              "Sunday": {
+                "type": "Json",
+                "required": false,
+                "description": "The schedule for Sunday."
+              },
+              "Monday": {
+                "type": "Json",
+                "required": false,
+                "description": "The schedule for Monday."
+              },
+              "Tuesday": {
+                "type": "Json",
+                "required": false,
+                "description": "The schedule for Tuesday."
+              },
+              "Wednesday": {
+                "type": "Json",
+                "required": false,
+                "description": "The schedule for Wednesday."
+              },
+              "Thursday": {
+                "type": "Json",
+                "required": false,
+                "description": "The schedule for Thursday."
+              },
+              "Friday": {
+                "type": "Json",
+                "required": false,
+                "description": "The schedule for Friday."
+              },
+              "Saturday": {
+                "type": "Json",
+                "required": false,
+                "description": "The schedule for Saturday."
+              }
+            }
+          },
+          "VirtualizationType": {
+            "type": "String",
+            "required": false,
+            "allowed-values": [
+              "*",
+              "paravirtual",
+              "hvm"
+            ],
+            "description": "The instance's virtualization type."
+          },
+          "Volumes": {
+            "type": "Array",
+            "array-type": "String",
+            "required": false,
+            "resource-ref-type": "AWS::OpsWorks::Volume",
+            "description": "A list of AWS OpsWorks volume IDs to associate with the instance."
+          }
+        }
+      },
+      "Condition": {
+        "type": "ConditionDeclaration",
+        "required": false,
+        "description": "Associated condition that if true will allow the resource to be created."
+      },
+      "DependsOn": {
+        "type": "Resource",
+        "required": false,
+        "description": "The DependsOn attribute enables you to specify that the creation of a specific resource follows another."
+      },
+      "Description": {
+        "type": "String",
+        "required": false,
+        "description": "A description for the CloudFormation resource. This field is ignored when the template is deployed to CloudFormation."
+      },
+      "DeletionPolicy": {
+        "type": "String",
+        "required": false,
+        "allowed-values": [
+          "Delete",
+          "Retain"
+        ],
+        "disable-refs": true,
+        "description": "The DeletionPolicy attribute enables you to specify how AWS CloudFormation handles the resource deletion."
+      },
+      "Metadata": {
+        "type": "Json",
+        "required": false,
+        "description": "The Metadata attribute enables you to associate structured data with a resource."
+      }
+    }
+  }
+,
   "AWS::OpsWorks::Layer": {
     "type": "Object",
     "required": false,
@@ -17600,6 +18260,11 @@
             "type": "Boolean",
             "required": true,
             "description": "For AWS OpsWorks stacks that are running in a VPC, whether to automatically assign a public IP address to Amazon EC2 instances in this layer."
+          },
+          "CustomJson": {
+            "type": "Json",
+            "required": false,
+            "description": "A custom stack configuration and deployment attributes that AWS OpsWorks installs on the layer's instances."
           },
           "CustomInstanceProfileArn": {
             "type": "String",
@@ -17805,9 +18470,14 @@
             "required": false,
             "description": "Describes the Amazon EBS volumes for this layer.",
             "properties": {
+              "Iops": {
+                "type": "Number",
+                "required": true,
+                "description": "The number of I/O operations per second (IOPS) to provision for the volume."
+              },
               "MountPoint": {
                 "type": "String",
-                "required": true,
+                "required": false,
                 "description": "The volume mount point, such as /dev/sdh."
               },
               "NumberOfDisks": {
@@ -17824,6 +18494,17 @@
                 "type": "Number",
                 "required": true,
                 "description": "The volume size."
+              },
+              "VolumeType": {
+                "type": "String",
+                "required": false,
+                "allowed-values": [
+                  "*",
+                  "standard",
+                  "io1",
+                  "gp2"
+                ],
+                "description": "The type of volume, such as magnetic or SSD."
               }
             }
           }
@@ -17902,6 +18583,17 @@
                 "description": "Whether to enable Berkshelf."
               }
             }
+          },
+          "CloneAppIds": {
+            "type": "Array",
+            "array-type": "String",
+            "required": false,
+            "description": "If you're cloning an AWS OpsWorks stack, a list of AWS OpsWorks application stack IDs from the source stack to include in the cloned stack."
+          },
+          "ClonePermissions": {
+            "type": "Boolean",
+            "required": false,
+            "description": "If you're cloning an AWS OpsWorks stack, indicates whether to clone the source stack's permissions."
           },
           "ConfigurationManager": {
             "type": "Object",
@@ -17994,6 +18686,31 @@
             "resource-ref-type": "AWS::EC2::Subnet",
             "description": "The stack's default subnet ID. All instances are launched into this subnet unless you specify another subnet ID when you create the instance."
           },
+          "EcsClusterArn": {
+            "type": "String",
+            "required": false,
+            "resource-ref-type": "AWS::ECS::Cluster",
+            "description": "The Amazon Resource Name (ARN) of the Amazon EC2 Container Service (Amazon ECS) cluster to register with the AWS OpsWorks stack."
+          },
+          "ElasticIps": {
+            "type": "Array",
+            "array-type": "Object",
+            "required": false,
+            "description": "A list of Elastic IP addresses to register with the AWS OpsWorks stack.",
+            "properties": {
+              "Ip": {
+                "type": "String",
+                "required": true,
+                "resource-ref-type": "AWS::EC2::EIP",
+                "description": "The Elastic IP address."
+              },
+              "Name": {
+                "type": "String",
+                "required": false,
+                "description": "A name for the Elastic IP address."
+              }
+            }
+          },
           "HostnameTheme": {
             "type": "String",
             "required": false,
@@ -18004,11 +18721,41 @@
             "required": true,
             "description": "The name of the AWS OpsWorks stack."
           },
+          "RdsDbInstances": {
+            "type": "Array",
+            "array-type": "Object",
+            "required": false,
+            "description": "The Amazon Relational Database Service (Amazon RDS) DB instance to register with the AWS OpsWorks stack.",
+            "properties": {
+              "DbPassword": {
+                "type": "String",
+                "required": true,
+                "description": "The password of the registered database."
+              },
+              "DbUser": {
+                "type": "String",
+                "required": true,
+                "description": "The master user name of the registered database."
+              },
+              "RdsDbInstanceArn": {
+                "type": "String",
+                "required": true,
+                "resource-ref-type": "AWS::EC2::EIP",
+                "description": "The Amazon Resource Name (ARN) of the Amazon RDS DB instance to register with the AWS OpsWorks stack."
+              }
+            }
+          },
           "ServiceRoleArn": {
             "type": "String",
             "required": true,
             "resource-ref-type": "AWS::IAM::Role",
             "description": "The AWS Identity and Access Management (IAM) role that AWS OpsWorks uses to work with AWS resources on your behalf. You must specify an Amazon Resource Name (ARN) for an existing IAM role."
+          },
+          "SourceStackId": {
+            "type": "String",
+            "required": true,
+            "resource-ref-type": "AWS::OpsWorks::Stack",
+            "description": "If you're cloning an AWS OpsWorks stack, the stack ID of the source AWS OpsWorks stack to clone."
           },
           "UseCustomCookbooks": {
             "type": "Boolean",
@@ -18025,6 +18772,142 @@
             "required": false,
             "resource-ref-type": "AWS::EC2::VPC",
             "description": "The ID of the VPC that the stack is to be launched into, which must be in the specified region. All instances are launched into this VPC."
+          }
+        }
+      },
+      "Condition": {
+        "type": "ConditionDeclaration",
+        "required": false,
+        "description": "Associated condition that if true will allow the resource to be created."
+      },
+      "DependsOn": {
+        "type": "Resource",
+        "required": false,
+        "description": "The DependsOn attribute enables you to specify that the creation of a specific resource follows another."
+      },
+      "Description": {
+        "type": "String",
+        "required": false,
+        "description": "A description for the CloudFormation resource. This field is ignored when the template is deployed to CloudFormation."
+      },
+      "DeletionPolicy": {
+        "type": "String",
+        "required": false,
+        "allowed-values": [
+          "Delete",
+          "Retain"
+        ],
+        "disable-refs": true,
+        "description": "The DeletionPolicy attribute enables you to specify how AWS CloudFormation handles the resource deletion."
+      },
+      "Metadata": {
+        "type": "Json",
+        "required": false,
+        "description": "The Metadata attribute enables you to associate structured data with a resource."
+      }
+    }
+  }
+,
+  "AWS::OpsWorks::UserProfile": {
+    "type": "Object",
+    "required": false,
+    "description": "The AWS::OpsWorks::UserProfile configures SSH access for users who require access to instances in an AWS OpsWorks stack.",
+    "properties": {
+      "Type": {
+        "type": "String",
+        "required": true,
+        "description": "The AWS::OpsWorks::UserProfile configures SSH access for users who require access to instances in an AWS OpsWorks stack."
+      },
+      "Properties": {
+        "type": "Object",
+        "required": true,
+        "properties": {
+          "AllowSelfManagement": {
+            "type": "Boolean",
+            "required": false,
+            "description": "Indicates whether users can use the AWS OpsWorks My Settings page to specify their own SSH public key."
+          },
+          "IamUserArn": {
+            "type": "String",
+            "required": false,
+            "resource-ref-type": "AWS::IAM::User",
+            "description": "The Amazon Resource Name (ARN) of the AWS Identity and Access Management (IAM) user to associate with this configuration."
+          },
+          "SshPublicKey": {
+            "type": "String",
+            "required": false,
+            "description": "The public SSH key that is associated with the IAM user. The IAM user must have or be given the corresponding private key to access instances."
+          }
+        }
+      },
+      "Condition": {
+        "type": "ConditionDeclaration",
+        "required": false,
+        "description": "Associated condition that if true will allow the resource to be created."
+      },
+      "DependsOn": {
+        "type": "Resource",
+        "required": false,
+        "description": "The DependsOn attribute enables you to specify that the creation of a specific resource follows another."
+      },
+      "Description": {
+        "type": "String",
+        "required": false,
+        "description": "A description for the CloudFormation resource. This field is ignored when the template is deployed to CloudFormation."
+      },
+      "DeletionPolicy": {
+        "type": "String",
+        "required": false,
+        "allowed-values": [
+          "Delete",
+          "Retain"
+        ],
+        "disable-refs": true,
+        "description": "The DeletionPolicy attribute enables you to specify how AWS CloudFormation handles the resource deletion."
+      },
+      "Metadata": {
+        "type": "Json",
+        "required": false,
+        "description": "The Metadata attribute enables you to associate structured data with a resource."
+      }
+    }
+  }
+,
+  "AWS::OpsWorks::Volume": {
+    "type": "Object",
+    "required": false,
+    "description": "The AWS::OpsWorks::Volume resource registers an Amazon Elastic Block Store (Amazon EBS) volume with an AWS OpsWorks stack.",
+    "properties": {
+      "Type": {
+        "type": "String",
+        "required": true,
+        "description": "The AWS::OpsWorks::Volume resource registers an Amazon Elastic Block Store (Amazon EBS) volume with an AWS OpsWorks stack."
+      },
+      "Properties": {
+        "type": "Object",
+        "required": true,
+        "properties": {
+          "Ec2VolumeId": {
+            "type": "String",
+            "required": true,
+            "resource-ref-type": "AWS::EC2::Volume",
+            "description": "The ID of the Amazon EBS volume to register with the AWS OpsWorks stack."
+          },
+          "MountPoint": {
+            "type": "String",
+            "required": false,
+            "description": "The mount point for the Amazon EBS volume, such as /mnt/disk1."
+          },
+          "Name": {
+            "type": "String",
+            "required": false,
+            "description": "A name for the Amazon EBS volume."
+          },
+          "StackId": {
+            "type": "String",
+            "required": false,
+            "resource-ref-type": "AWS::OpsWorks::Stack",
+            "description": "The ID of the AWS OpsWorks stack that AWS OpsWorks registers the volume to."
           }
         }
       },
@@ -18430,6 +19313,11 @@
             "required": false,
             "description": "For supported engines, specifies the character set to associate with the database instance."
           },
+          "CopyTagsToSnapshot": {
+            "type": "Boolean",
+            "required": false,
+            "description": "Indicates whether to copy all of the user-defined tags from the DB instance to snapshots of the DB instance."
+          },
           "DBClusterIdentifier": {
             "type": "String",
             "required": false,
@@ -18628,6 +19516,11 @@
               "*"
             ],
             "description": "The storage type associated with this database instance."
+          },
+          "Timezone": {
+            "type": "String",
+            "required": false,
+            "description": "The time zone of the DB instance, which you can specify to match the time zone of your applications."
           },
           "VPCSecurityGroups": {
             "type": "Array",
@@ -21320,11 +22213,6 @@
                           "AWS::Serverless::Api"
                         ],
                         "description": "Identifier of a RestApi resource which MUST contain an operation with the given path and method."
-                      },
-                      "RestApiStage": {
-                        "type": "String",
-                        "required": false,
-                        "description": "Stage name of the RestApi resource which triggers this event. MUST be specified if RestApiId property is specified."
                       }
                     }
                   }
@@ -21965,6 +22853,101 @@
     }
   }
 ,
+  "AWS::SSM::Association": {
+    "type": "Object",
+    "required": false,
+    "description": "The AWS::SSM::Association resource associates an Amazon EC2 Simple Systems Manager (SSM) document with EC2 instances that contain a configuration agent to process the document.",
+    "properties": {
+      "Type": {
+        "type": "String",
+        "required": true,
+        "description": "The AWS::SSM::Association resource associates an Amazon EC2 Simple Systems Manager (SSM) document with EC2 instances that contain a configuration agent to process the document."
+      },
+      "Properties": {
+        "type": "Object",
+        "required": true,
+        "properties": {
+          "DocumentVersion": {
+            "type": "String",
+            "required": false,
+            "description": "The version of the SSM document to associate with the target."
+          },
+          "InstanceId": {
+            "type": "String",
+            "required": false,
+            "resource-ref-type": "AWS::EC2::Instance",
+            "description": "The ID of the instance that the SSM document is associated with."
+          },
+          "Name": {
+            "type": "String",
+            "required": true,
+            "description": "The name of the SSM document."
+          },
+          "Parameters": {
+            "type": "Json",
+            "required": false,
+            "description": "Parameter values that the SSM document uses at runtime."
+          },
+          "ScheduleExpression": {
+            "type": "String",
+            "required": false,
+            "description": "A Cron expression that specifies when the association is applied to the target."
+          },
+          "Targets": {
+            "type": "Array",
+            "array-type": "Object",
+            "required": false,
+            "description": "The targets that the SSM document sends commands to.",
+            "properties": {
+              "Key": {
+                "type": "String",
+                "required": false,
+                "description": "The name of the criteria that EC2 instances must meet. "
+              },
+              "Values": {
+                "type": "Array",
+                "array-type": "String",
+                "required": false,
+                "resource-ref-type": "*",
+                "description": "The value of the criteria. SSM runs targeted commands on EC2 instances that match the criteria."
+              }
+            }
+          }
+        }
+      },
+      "Condition": {
+        "type": "ConditionDeclaration",
+        "required": false,
+        "description": "Associated condition that if true will allow the resource to be created."
+      },
+      "DependsOn": {
+        "type": "Resource",
+        "required": false,
+        "description": "The DependsOn attribute enables you to specify that the creation of a specific resource follows another."
+      },
+      "Description": {
+        "type": "String",
+        "required": false,
+        "description": "A description for the CloudFormation resource. This field is ignored when the template is deployed to CloudFormation."
+      },
+      "DeletionPolicy": {
+        "type": "String",
+        "required": false,
+        "allowed-values": [
+          "Delete",
+          "Retain"
+        ],
+        "disable-refs": true,
+        "description": "The DeletionPolicy attribute enables you to specify how AWS CloudFormation handles the resource deletion."
+      },
+      "Metadata": {
+        "type": "Json",
+        "required": false,
+        "description": "The Metadata attribute enables you to associate structured data with a resource."
+      }
+    }
+  }
+,
   "AWS::SSM::Document": {
     "type": "Object",
     "required": false,
@@ -21983,6 +22966,17 @@
             "type": "Json",
             "required": true,
             "description": "A JSON object that describes an instance configuration."
+          },
+          "DocumentType": {
+            "type": "String",
+            "required": false,
+            "allowed-values": [
+              "*",
+              "Command",
+              "Policy",
+              "Automation"
+            ],
+            "description": "The type of document to create that relates to the purpose of your document."
           }
         }
       },
